@@ -1,9 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
+import NavBar from './components/NavBar/NavBar';
+import SeriesForm from './components/SerieForm/SerieForm';
+import SeriesList from './components/SerieList/SerieList';
 
 function App() {
   return (
     <div className="App">
+      <NavBar />
+      <SeriesForm />
+      <SeriesList />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
