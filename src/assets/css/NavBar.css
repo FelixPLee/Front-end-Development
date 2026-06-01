@@ -18,6 +18,11 @@
     letter-spacing: 1px;
 }
 
+.navbar-brand > img {
+    height: 30px;
+    length: auto;
+}
+
 .navbar-links {
     list-style: none;
     display: flex;
@@ -36,3 +41,4 @@
 .navbar-links li a:hover {
     color: #FFD700;
 }
+

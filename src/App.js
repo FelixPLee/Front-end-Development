@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
+import Form from './components/SerieForm/Form';
 
 // Componentes temporários (Placeholders) para as páginas
 const Home = () => <div><h1>Início</h1><p>Página de apresentação básica.</p></div>;
 const About = () => <div><h1>Sobre</h1><p>Sobre o projeto.</p></div>;
 const Lista = () => <div><h1>Lista de Séries</h1><p>Tabela de séries virá aqui.</p></div>;
-const Form = () => <div><h1>Formulário de Série</h1><p>Adicionar ou editar séries.</p></div>;
+//const Form = () => <div><h1>Formulário de Série</h1><p>Adicionar ou editar séries.</p></div>;
 
 function App() {
     return (
