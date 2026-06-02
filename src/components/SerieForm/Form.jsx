@@ -52,14 +52,32 @@ let Form = () => {
         setTemporadas(novasTemporadas);
         setSerie({ ...serie, numeroTemporadas: novasTemporadas.length });
     };
-
-    // Lida com o envio do formulário
+// Lida com o envio do formulário
     const handleSubmit = (e) => {
         e.preventDefault();
-        const dadosFinais = { ...serie, temporadas };
-        console.log('Série Registrada:', dadosFinais);
-        alert('Série salva com sucesso! (Verifique o console)');
-        // Futuramente, aqui chamaremos a função para salvar no estado global ou API
+        
+        // 1. Monta o objeto final com um ID único para a série
+        const novaSerie = { 
+            ...serie, 
+            id: Date.now(), // Gera um ID único baseado na data atual
+            temporadas 
+        };
+
+        // 2. Busca os dados que já estão no localStorage (ou cria um array vazio se não houver nada)
+        const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
+
+        // 3. Adiciona a nova série ao array
+        seriesSalvas.push(novaSerie);
+
+        // 4. Salva o array atualizado de volta no localStorage (transformando em texto)
+        localStorage.setItem('seriesEstrelando', JSON.stringify(seriesSalvas));
+
+        console.log('Série Registrada e Salva:', novaSerie);
+        alert('Série salva com sucesso!');
+        
+        // Opcional: Limpar o formulário após salvar
+        setSerie({ titulo: '', numeroTemporadas: 1, categoria: '' });
+        setTemporadas([{ id: Date.now(), numero: 1, dataLancamento: '', diretor: '', produtora: '', dataAssistido: '' }]);
     };
 
     return (

@@ -1,0 +1,145 @@
+.lista-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #1C1C1C;
+    padding: 2rem;
+    border-radius: 8px;
+    color: #E6D5B8;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.lista-title {
+    color: #FFD700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.series-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.series-table th, 
+.series-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #8A8D91;
+}
+
+.series-table th {
+    background-color: rgba(138, 141, 145, 0.2);
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+
+.serie-link {
+    color: #E6D5B8;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.serie-link:hover {
+    color: #FFD700;
+    text-decoration: underline;
+}
+
+.row-add td {
+    border-bottom: none;
+    padding-top: 2rem;
+}
+
+/* Botões da Tabela */
+.btn-edit {
+    background-color: #8A8D91;
+    color: #1C1C1C;
+    padding: 0.5rem 1rem;
+}
+
+.btn-edit:hover {
+    background-color: #a3a6aa;
+}
+
+.btn-delete {
+    background-color: #7A161E;
+    color: #E6D5B8;
+    padding: 0.5rem 1rem;
+}
+
+.btn-delete:hover {
+    background-color: #5a0f15;
+}
+
+.btn-add-table {
+    display: inline-block;
+    background-color: #FFD700;
+    color: #1C1C1C;
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add-table:hover {
+    background-color: #e6c200;
+}
+
+/* Modal Estilos */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #1C1C1C;
+    padding: 2.5rem;
+    border-radius: 8px;
+    border: 2px solid #7A161E;
+    text-align: center;
+    max-width: 400px;
+    color: #E6D5B8;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+}
+
+.modal-content h2 {
+    color: #7A161E;
+    margin-top: 0;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.btn-cancel {
+    background-color: #8A8D91;
+    color: #1C1C1C;
+    padding: 0.6rem 1.2rem;
+}
+
+.btn-cancel:hover {
+    background-color: #a3a6aa;
+}
+
+.btn-confirm {
+    background-color: #7A161E;
+    color: #E6D5B8;
+    padding: 0.6rem 1.2rem;
+}
+
+.btn-confirm:hover {
+    background-color: #5a0f15;
+}
