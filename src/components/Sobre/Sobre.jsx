@@ -1,6 +1,6 @@
 import React from 'react';
-import imgForm from '../../assets/figures/exemplo_form.png';
-import imgLista from '../../assets/figures/exemplo_lista.png';
+import imgSerieForm from '../../assets/figures/exemplo_form.png';
+import imgSerieList from '../../assets/figures/exemplo_lista.png';
 import '../../assets/css/Sobre.css';
 
 const Sobre = () => {
@@ -16,10 +16,10 @@ const Sobre = () => {
                 </p>
             </section>
 
-            {/* Seção 2: O Formulário (Imagem na Esquerda) */}
+            {/* Seção 2: O SerieFormulário (Imagem na Esquerda) */}
             <section className="sobre-section alternate">
                 <div className="sobre-image-container">
-                    <img src={require('./../../assets/figures/exemplo_form.png')} alt="Exemplo do Formulário" className="sobre-img" />
+                    <img src={require('./../../assets/figures/exemplo_form.png')} alt="Exemplo do SerieFormulário" className="sobre-img" />
                 </div>
                 <div className="sobre-content">
                     <h2>Gestão Detalhada</h2>
@@ -31,19 +31,19 @@ const Sobre = () => {
                 </div>
             </section>
 
-            {/* Seção 3: A Lista (Imagem na Direita) */}
+            {/* Seção 3: A SerieList (Imagem na Direita) */}
             <section className="sobre-section">
                 <div className="sobre-content">
                     <h2>Sua Coleção Viva</h2>
                     <p className="sobre-text">
-                        A página de Lista oferece uma visão macro de toda a sua coleção. Através de uma tabela organizada, 
+                        A página de SerieList oferece uma visão macro de toda a sua coleção. Através de uma tabela organizada, 
                         você tem acesso rápido a todas as séries registradas. A interatividade é o ponto chave: você pode 
                         acessar a visualização detalhada, entrar no modo de edição para ajustar informações ou excluir registros 
                         com confirmação de segurança, garantindo controle total sobre seus dados.
                     </p>
                 </div>
                 <div className="sobre-image-container">
-                    <img src={require('./../../assets/figures/exemplo_lista.png')} alt="Exemplo da Lista" className="sobre-img" />
+                    <img src={require('./../../assets/figures/exemplo_lista.png')} alt="Exemplo da SerieList" className="sobre-img" />
                 </div>
             </section>
         </div>

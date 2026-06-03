@@ -16,7 +16,7 @@ const Home = () => {
                 
                 <div className="home-actions">
                     <Link to="/lista" className="btn-home">
-                        Minha Lista
+                        Minha SerieList
                     </Link>
                     
                     <Link to="/form" className="btn-home">

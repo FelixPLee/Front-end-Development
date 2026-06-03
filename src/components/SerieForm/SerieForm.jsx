@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import '../../assets/css/Form.css';
+import '../../assets/css/SerieForm.css';
 
-const Form = () => {
+const SerieForm = () => {
     // Hooks de navegação e leitura de URL
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -225,4 +225,4 @@ const Form = () => {
     );
 };
 
-export default Form;
+export default SerieForm;

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Home from './components/Home/Home';
 import Sobre from './components/Sobre/Sobre';
-import Form from './components/SerieForm/Form';
-import Lista from './components/Lista/Lista';
+import SerieForm from './components/SerieForm/SerieForm';
+import SerieList from './components/SerieList/SerieList';
 
 
 function App() {
@@ -18,8 +18,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/about" element={<Sobre />} />
-                        <Route path="/lista" element={<Lista />} />
-                        <Route path="/form" element={<Form />} />
+                        <Route path="/lista" element={<SerieList />} />
+                        <Route path="/form" element={<SerieForm />} />
                     </Routes>
                 </main>
             </div>

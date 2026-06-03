@@ -1,9 +1,9 @@
 // Adicione o useEffect na importação do React
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../../assets/css/Lista.css';
+import '../../assets/css/SerieList.css';
 
-const Lista = () => {
+const SerieList = () => {
     // Começamos com um array vazio em vez dos dados fictícios
     const [series, setSeries] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
@@ -11,7 +11,7 @@ const Lista = () => {
 
     const navigate = useNavigate();
 
-    // O useEffect roda automaticamente quando a página de Lista é aberta
+    // O useEffect roda automaticamente quando a página de SerieList é aberta
     useEffect(() => {
         // Busca os dados do localStorage e atualiza o estado da tabela
         const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
@@ -30,13 +30,13 @@ const Lista = () => {
 
     const confirmarDelecao = () => {
         // Filtra removendo a série da tela
-        const novaLista = series.filter(serie => serie.id !== serieParaDeletar.id);
+        const novaSerieList = series.filter(serie => serie.id !== serieParaDeletar.id);
         
         // Atualiza a tela
-        setSeries(novaLista);
+        setSeries(novaSerieList);
         
         // Atualiza o localStorage apagando a série definitivamente
-        localStorage.setItem('seriesEstrelando', JSON.stringify(novaLista));
+        localStorage.setItem('seriesEstrelando', JSON.stringify(novaSerieList));
         
         fecharModal();
     };
@@ -62,7 +62,7 @@ const Lista = () => {
                 <tbody>
                     {series.map((serie) => (
                         <tr key={serie.id}>
-                            {/* Coluna 1: Título como âncora para o Form */}
+                            {/* Coluna 1: Título como âncora para o SerieForm */}
                             <td>
                                 <Link to={`/form?view=${serie.id}`} className="serie-link">
                                     {serie.titulo}
@@ -95,7 +95,7 @@ const Lista = () => {
                     <tr className="row-add">
                         <td colSpan="3">
                             <Link to="/form" className="btn-add-table">
-                                + Adicionar Série à Lista
+                                + Adicionar Série à SerieList
                             </Link>
                         </td>
                     </tr>
@@ -121,4 +121,4 @@ const Lista = () => {
     );
 };
 
-export default Lista;
+export default SerieList;
