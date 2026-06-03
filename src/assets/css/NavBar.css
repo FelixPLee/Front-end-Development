@@ -7,6 +7,20 @@
     border-bottom: 3px solid #7A161E;
 }
 
+/* Transforma o container da marca em Flexbox para alinhar lado a lado */
+.navbar-brand {
+    display: flex;
+    align-items: center; /* Alinha verticalmente ao centro */
+    gap: 1rem; /* Define a distância exata entre o logo e o título */
+}
+
+/* Controla o tamanho do logo para não quebrar a barra */
+.navbar-logo {
+    height: 40px; /* Você pode aumentar ou diminuir conforme o tamanho real da sua imagem */
+    width: auto;
+    object-fit: contain;
+}
+
 .navbar-brand h2 {
     margin: 0;
 }

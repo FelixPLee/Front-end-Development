@@ -1,0 +1,62 @@
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Usa a altura da tela menos a altura aproximada do NavBar */
+    min-height: calc(100vh - 150px); 
+    padding: 2rem;
+}
+
+.home-content {
+    background-color: #1C1C1C;
+    padding: 4rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    max-width: 700px;
+    text-align: center;
+    border-top: 4px solid #7A161E;
+}
+
+.home-title {
+    font-size: 3rem;
+    color: #E6D5B8;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.highlight {
+    color: #FFD700;
+}
+
+.home-description {
+    font-size: 1.2rem;
+    color: #8A8D91;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.home-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+/* Estilo base para todos os botões da Home */
+.btn-home {
+    background-color: #FFD700;
+    color: #1C1C1C;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    display: inline-block;
+}
+
+/* Efeito ao passar o mouse */
+.btn-home:hover {
+    background-color: #e6c200;
+    transform: translateY(-3px);
+}

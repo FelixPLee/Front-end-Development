@@ -1,26 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import '../../assets/css/Form.css';
 
-let Form = () => {
-    // Estado para os dados principais da série
+const Form = () => {
+    // Hooks de navegação e leitura de URL
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    
+    // Captura o ID da URL se ele existir (ex: ?edit=1711234567)
+    const editId = searchParams.get('edit');
+
     const [serie, setSerie] = useState({
         titulo: '',
         numeroTemporadas: 1,
         categoria: '',
     });
 
-    // Estado para a lista de temporadas (elemento filho)
     const [temporadas, setTemporadas] = useState([
-        { id: 1, numero: 1, dataLancamento: '', diretor: '', produtora: '', dataAssistido: '' }
+        { id: Date.now(), numero: 1, dataLancamento: '', diretor: '', produtora: '', dataAssistido: '' }
     ]);
 
-    // Atualiza os dados principais da série
+    // EFEITO DE CARREGAMENTO (Modo Edição)
+    useEffect(() => {
+        // Se existe um ID na URL, significa que o usuário quer editar
+        if (editId) {
+            const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
+            
+            // O método .find() procura na lista a série que tem o ID igual ao da URL
+            // O editId vem como texto da URL, então transformamos o id da série em texto para comparar
+            const serieEncontrada = seriesSalvas.find(s => s.id.toString() === editId);
+
+            if (serieEncontrada) {
+                // Se encontrou a série, preenche os estados com os dados dela
+                setSerie({
+                    id: serieEncontrada.id, // Mantemos o ID original oculto no estado
+                    titulo: serieEncontrada.titulo,
+                    numeroTemporadas: serieEncontrada.numeroTemporadas,
+                    categoria: serieEncontrada.categoria
+                });
+                setTemporadas(serieEncontrada.temporadas);
+            }
+        }
+    }, [editId]); // O useEffect roda toda vez que o editId mudar
+
     const handleSerieChange = (e) => {
         const { name, value } = e.target;
         setSerie({ ...serie, [name]: value });
     };
 
-    // Atualiza os dados de uma temporada específica
     const handleTemporadaChange = (id, field, value) => {
         const novasTemporadas = temporadas.map((temp) => {
             if (temp.id === id) {
@@ -31,11 +58,10 @@ let Form = () => {
         setTemporadas(novasTemporadas);
     };
 
-    // Adiciona uma nova temporada ao array
     const adicionarTemporada = () => {
         const proximoNumero = temporadas.length + 1;
         const novaTemporada = {
-            id: Date.now(), // Gera um ID único simples
+            id: Date.now(),
             numero: proximoNumero,
             dataLancamento: '',
             diretor: '',
@@ -46,46 +72,47 @@ let Form = () => {
         setSerie({ ...serie, numeroTemporadas: proximoNumero });
     };
 
-    // Remove uma temporada específica
     const removerTemporada = (id) => {
         const novasTemporadas = temporadas.filter(temp => temp.id !== id);
         setTemporadas(novasTemporadas);
         setSerie({ ...serie, numeroTemporadas: novasTemporadas.length });
     };
-// Lida com o envio do formulário
+
+    // NOVA LÓGICA DE SALVAR (Criação vs Atualização)
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        // 1. Monta o objeto final com um ID único para a série
-        const novaSerie = { 
-            ...serie, 
-            id: Date.now(), // Gera um ID único baseado na data atual
-            temporadas 
-        };
-
-        // 2. Busca os dados que já estão no localStorage (ou cria um array vazio se não houver nada)
         const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
 
-        // 3. Adiciona a nova série ao array
-        seriesSalvas.push(novaSerie);
+        if (serie.id) {
+            // MODO EDIÇÃO: A série já tem um ID no estado
+            const serieAtualizada = { ...serie, temporadas };
+            
+            // Usamos .map() para substituir a série antiga pela atualizada na lista
+            const listaAtualizada = seriesSalvas.map(s => 
+                s.id === serie.id ? serieAtualizada : s
+            );
+            
+            localStorage.setItem('seriesEstrelando', JSON.stringify(listaAtualizada));
+            alert('Série atualizada com sucesso!');
+        } else {
+            // MODO CRIAÇÃO: É uma série nova
+            const novaSerie = { ...serie, id: Date.now(), temporadas };
+            seriesSalvas.push(novaSerie);
+            
+            localStorage.setItem('seriesEstrelando', JSON.stringify(seriesSalvas));
+            alert('Série salva com sucesso!');
+        }
 
-        // 4. Salva o array atualizado de volta no localStorage (transformando em texto)
-        localStorage.setItem('seriesEstrelando', JSON.stringify(seriesSalvas));
-
-        console.log('Série Registrada e Salva:', novaSerie);
-        alert('Série salva com sucesso!');
-        
-        // Opcional: Limpar o formulário após salvar
-        setSerie({ titulo: '', numeroTemporadas: 1, categoria: '' });
-        setTemporadas([{ id: Date.now(), numero: 1, dataLancamento: '', diretor: '', produtora: '', dataAssistido: '' }]);
+        // Redireciona o usuário de volta para a tabela após salvar
+        navigate('/lista');
     };
 
     return (
         <div className="form-container">
-            <h1 className="form-title">Registrar Série</h1>
+            {/* Muda o título dependendo se está editando ou criando */}
+            <h1 className="form-title">{editId ? 'Editar Série' : 'Registrar Série'}</h1>
             
             <form onSubmit={handleSubmit}>
-                {/* DADOS DA SÉRIE */}
                 <div className="form-section">
                     <h2>Dados da Série</h2>
                     <div className="input-group">
@@ -124,7 +151,6 @@ let Form = () => {
 
                 <hr className="divider" />
 
-                {/* DADOS DAS TEMPORADAS */}
                 <div className="form-section">
                     <h2>Temporadas</h2>
                     {temporadas.map((temp, index) => (
@@ -189,7 +215,10 @@ let Form = () => {
                 </div>
 
                 <div className="form-actions">
-                    <button type="submit" className="btn-submit">Salvar Série</button>
+                    {/* Botão também muda de texto dependendo da ação */}
+                    <button type="submit" className="btn-submit">
+                        {editId ? 'Atualizar Série' : 'Salvar Série'}
+                    </button>
                 </div>
             </form>
         </div>
