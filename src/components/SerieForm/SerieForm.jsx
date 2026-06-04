@@ -3,12 +3,14 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import '../../assets/css/SerieForm.css';
 
 const SerieForm = () => {
-    // Hooks de navegação e leitura de URL
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     
-    // Captura o ID da URL se ele existir (ex: ?edit=1711234567)
+    // Captura qual ID está na URL, seja edit ou view
     const editId = searchParams.get('edit');
+    const viewId = searchParams.get('view');
+    const activeId = editId || viewId;
+    const isViewMode = Boolean(viewId); // Retorna true se estiver no modo de visualização
 
     const [serie, setSerie] = useState({
         titulo: '',
@@ -20,20 +22,14 @@ const SerieForm = () => {
         { id: Date.now(), numero: 1, dataLancamento: '', diretor: '', produtora: '', dataAssistido: '' }
     ]);
 
-    // EFEITO DE CARREGAMENTO (Modo Edição)
     useEffect(() => {
-        // Se existe um ID na URL, significa que o usuário quer editar
-        if (editId) {
+        if (activeId) {
             const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
-            
-            // O método .find() procura na lista a série que tem o ID igual ao da URL
-            // O editId vem como texto da URL, então transformamos o id da série em texto para comparar
-            const serieEncontrada = seriesSalvas.find(s => s.id.toString() === editId);
+            const serieEncontrada = seriesSalvas.find(s => s.id.toString() === activeId);
 
             if (serieEncontrada) {
-                // Se encontrou a série, preenche os estados com os dados dela
                 setSerie({
-                    id: serieEncontrada.id, // Mantemos o ID original oculto no estado
+                    id: serieEncontrada.id,
                     titulo: serieEncontrada.titulo,
                     numeroTemporadas: serieEncontrada.numeroTemporadas,
                     categoria: serieEncontrada.categoria
@@ -41,7 +37,7 @@ const SerieForm = () => {
                 setTemporadas(serieEncontrada.temporadas);
             }
         }
-    }, [editId]); // O useEffect roda toda vez que o editId mudar
+    }, [activeId]);
 
     const handleSerieChange = (e) => {
         const { name, value } = e.target;
@@ -78,39 +74,44 @@ const SerieForm = () => {
         setSerie({ ...serie, numeroTemporadas: novasTemporadas.length });
     };
 
-    // NOVA LÓGICA DE SALVAR (Criação vs Atualização)
+    // Troca o parâmetro da URL de ?view=id para ?edit=id, destravando o formulário
+    const habilitarEdicao = () => {
+        setSearchParams({ edit: viewId });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        // Se estiver em modo de visualização, o botão de submit não deve salvar nada
+        if (isViewMode) return;
+
         const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
 
-        if (serie.id) {
-            // MODO EDIÇÃO: A série já tem um ID no estado
+        if (editId) {
             const serieAtualizada = { ...serie, temporadas };
-            
-            // Usamos .map() para substituir a série antiga pela atualizada na lista
             const listaAtualizada = seriesSalvas.map(s => 
                 s.id === serie.id ? serieAtualizada : s
             );
-            
             localStorage.setItem('seriesEstrelando', JSON.stringify(listaAtualizada));
             alert('Série atualizada com sucesso!');
         } else {
-            // MODO CRIAÇÃO: É uma série nova
             const novaSerie = { ...serie, id: Date.now(), temporadas };
             seriesSalvas.push(novaSerie);
-            
             localStorage.setItem('seriesEstrelando', JSON.stringify(seriesSalvas));
             alert('Série salva com sucesso!');
         }
 
-        // Redireciona o usuário de volta para a tabela após salvar
         navigate('/lista');
     };
 
+    // Define o título do formulário com base no estado atual
+    let formTitle = 'Registrar Série';
+    if (isViewMode) formTitle = 'Visualizar Série';
+    else if (editId) formTitle = 'Editar Série';
+
     return (
         <div className="form-container">
-            {/* Muda o título dependendo se está editando ou criando */}
-            <h1 className="form-title">{editId ? 'Editar Série' : 'Registrar Série'}</h1>
+            <h1 className="form-title">{formTitle}</h1>
             
             <form onSubmit={handleSubmit}>
                 <div className="form-section">
@@ -122,6 +123,7 @@ const SerieForm = () => {
                             name="titulo" 
                             value={serie.titulo} 
                             onChange={handleSerieChange} 
+                            disabled={isViewMode}
                             required 
                         />
                     </div>
@@ -134,11 +136,13 @@ const SerieForm = () => {
                                 name="categoria" 
                                 value={serie.categoria} 
                                 onChange={handleSerieChange} 
+                                disabled={isViewMode}
                                 required 
                             />
                         </div>
                         <div className="input-group">
                             <label>Nº de Temporadas (Automático):</label>
+                            {/* Este campo é sempre desabilitado, não importa o modo */}
                             <input 
                                 type="number" 
                                 name="numeroTemporadas" 
@@ -157,7 +161,8 @@ const SerieForm = () => {
                         <div key={temp.id} className="temporada-card">
                             <div className="temporada-header">
                                 <h3>Temporada {index + 1}</h3>
-                                {temporadas.length > 1 && (
+                                {/* Só mostra o botão de remover se NÃO estiver em view mode */}
+                                {!isViewMode && temporadas.length > 1 && (
                                     <button 
                                         type="button" 
                                         className="btn-remove" 
@@ -175,6 +180,7 @@ const SerieForm = () => {
                                         type="date" 
                                         value={temp.dataLancamento} 
                                         onChange={(e) => handleTemporadaChange(temp.id, 'dataLancamento', e.target.value)} 
+                                        disabled={isViewMode}
                                         required 
                                     />
                                 </div>
@@ -184,6 +190,7 @@ const SerieForm = () => {
                                         type="date" 
                                         value={temp.dataAssistido} 
                                         onChange={(e) => handleTemporadaChange(temp.id, 'dataAssistido', e.target.value)} 
+                                        disabled={isViewMode}
                                     />
                                 </div>
                             </div>
@@ -195,6 +202,7 @@ const SerieForm = () => {
                                         type="text" 
                                         value={temp.diretor} 
                                         onChange={(e) => handleTemporadaChange(temp.id, 'diretor', e.target.value)} 
+                                        disabled={isViewMode}
                                     />
                                 </div>
                                 <div className="input-group">
@@ -203,22 +211,32 @@ const SerieForm = () => {
                                         type="text" 
                                         value={temp.produtora} 
                                         onChange={(e) => handleTemporadaChange(temp.id, 'produtora', e.target.value)} 
+                                        disabled={isViewMode}
                                     />
                                 </div>
                             </div>
                         </div>
                     ))}
 
-                    <button type="button" className="btn-add" onClick={adicionarTemporada}>
-                        + Adicionar Temporada
-                    </button>
+                    {/* Só mostra o botão de adicionar temporada se NÃO estiver em view mode */}
+                    {!isViewMode && (
+                        <button type="button" className="btn-add" onClick={adicionarTemporada}>
+                            + Adicionar Temporada
+                        </button>
+                    )}
                 </div>
 
                 <div className="form-actions">
-                    {/* Botão também muda de texto dependendo da ação */}
-                    <button type="submit" className="btn-submit">
-                        {editId ? 'Atualizar Série' : 'Salvar Série'}
-                    </button>
+                    {/* Renderização Condicional dos Botões Inferiores */}
+                    {isViewMode ? (
+                        <button type="button" className="btn-submit" onClick={habilitarEdicao}>
+                            Habilitar Edição
+                        </button>
+                    ) : (
+                        <button type="submit" className="btn-submit">
+                            {editId ? 'Atualizar Série' : 'Salvar Série'}
+                        </button>
+                    )}
                 </div>
             </form>
         </div>

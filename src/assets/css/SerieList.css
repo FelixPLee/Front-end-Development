@@ -143,3 +143,19 @@
 .btn-confirm:hover {
     background-color: #5a0f15;
 }
+
+.btn-view {
+    background-color: #E6D5B8;
+    color: #1C1C1C;
+    padding: 0.5rem 1rem;
+}
+
+.btn-view:hover {
+    background-color: #c7b89d;
+}
+
+.serie-titulo-texto {
+    color: #E6D5B8;
+    font-weight: bold;
+    font-size: 1.1rem;
+}

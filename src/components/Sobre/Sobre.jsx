@@ -1,6 +1,6 @@
 import React from 'react';
-import imgSerieForm from '../../assets/figures/exemplo_form.png';
-import imgSerieList from '../../assets/figures/exemplo_lista.png';
+import imgForm from '../../assets/figures/exemplo_form.png';
+import imgLista from '../../assets/figures/exemplo_lista.png';
 import '../../assets/css/Sobre.css';
 
 const Sobre = () => {
@@ -16,34 +16,35 @@ const Sobre = () => {
                 </p>
             </section>
 
-            {/* Seção 2: O SerieFormulário (Imagem na Esquerda) */}
+            {/* Seção 2: O Formulário (SerieForm) */}
             <section className="sobre-section alternate">
                 <div className="sobre-image-container">
-                    <img src={require('./../../assets/figures/exemplo_form.png')} alt="Exemplo do SerieFormulário" className="sobre-img" />
+                    <img src={imgForm} alt="Exemplo do Formulário" className="sobre-img" />
                 </div>
                 <div className="sobre-content">
-                    <h2>Gestão Detalhada</h2>
+                    <h2>Gestão Detalhada com SerieForm</h2>
                     <p className="sobre-text">
-                        Nosso formulário foi projetado para ser dinâmico e intuitivo. Nele, você registra o título principal, 
-                        a categoria e, de forma aninhada, cada temporada individualmente. Para cada temporada, é possível 
-                        anotar dados técnicos como diretor e produtora, além de datas importantes de lançamento e visualização.
+                        O componente <strong>SerieForm</strong> foi projetado para ser dinâmico e seguro. Nele, você registra os dados principais 
+                        e aninha cada temporada individualmente. Para proteger seus registros contra alterações acidentais, ele conta com um 
+                        <strong> Modo de Visualização</strong> (somente leitura). Caso precise alterar algo, basta um clique em "Habilitar Edição" 
+                        para destravar os campos e atualizar sua série.
                     </p>
                 </div>
             </section>
 
-            {/* Seção 3: A SerieList (Imagem na Direita) */}
+            {/* Seção 3: A Lista (SerieList) */}
             <section className="sobre-section">
                 <div className="sobre-content">
-                    <h2>Sua Coleção Viva</h2>
+                    <h2>Sua Coleção Viva no SerieList</h2>
                     <p className="sobre-text">
-                        A página de SerieList oferece uma visão macro de toda a sua coleção. Através de uma tabela organizada, 
-                        você tem acesso rápido a todas as séries registradas. A interatividade é o ponto chave: você pode 
-                        acessar a visualização detalhada, entrar no modo de edição para ajustar informações ou excluir registros 
-                        com confirmação de segurança, garantindo controle total sobre seus dados.
+                        O <strong>SerieList</strong> oferece uma visão macro de toda a sua coleção. Através de uma tabela organizada, 
+                        você tem acesso rápido a todas as séries registradas. A interatividade é o ponto chave: você pode abrir os detalhes 
+                        completos de uma série no modo de visualização, entrar diretamente no modo de edição rápida, ou excluir registros 
+                        com um modal de confirmação de segurança.
                     </p>
                 </div>
                 <div className="sobre-image-container">
-                    <img src={require('./../../assets/figures/exemplo_lista.png')} alt="Exemplo da SerieList" className="sobre-img" />
+                    <img src={imgLista} alt="Exemplo da Lista" className="sobre-img" />
                 </div>
             </section>
         </div>

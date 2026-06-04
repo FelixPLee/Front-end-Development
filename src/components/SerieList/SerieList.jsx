@@ -1,19 +1,15 @@
-// Adicione o useEffect na importação do React
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/css/SerieList.css';
 
 const SerieList = () => {
-    // Começamos com um array vazio em vez dos dados fictícios
     const [series, setSeries] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
     const [serieParaDeletar, setSerieParaDeletar] = useState(null);
 
     const navigate = useNavigate();
 
-    // O useEffect roda automaticamente quando a página de SerieList é aberta
     useEffect(() => {
-        // Busca os dados do localStorage e atualiza o estado da tabela
         const seriesSalvas = JSON.parse(localStorage.getItem('seriesEstrelando')) || [];
         setSeries(seriesSalvas);
     }, []);
@@ -29,23 +25,20 @@ const SerieList = () => {
     };
 
     const confirmarDelecao = () => {
-        // Filtra removendo a série da tela
-        const novaSerieList = series.filter(serie => serie.id !== serieParaDeletar.id);
-        
-        // Atualiza a tela
-        setSeries(novaSerieList);
-        
-        // Atualiza o localStorage apagando a série definitivamente
-        localStorage.setItem('seriesEstrelando', JSON.stringify(novaSerieList));
-        
+        const novaLista = series.filter(serie => serie.id !== serieParaDeletar.id);
+        setSeries(novaLista);
+        localStorage.setItem('seriesEstrelando', JSON.stringify(novaLista));
         fecharModal();
+    };
+
+    // Novas funções de navegação
+    const handleVisualizar = (id) => {
+        navigate(`/form?view=${id}`); // Mantive a rota /form, ajuste se tiver alterado no App.js
     };
 
     const handleEditar = (id) => {
         navigate(`/form?edit=${id}`);
     };
-
-    // ... (o restante do return com a tabela e o modal continua exatamente igual)
 
     return (
         <div className="lista-container">
@@ -55,6 +48,7 @@ const SerieList = () => {
                 <thead>
                     <tr>
                         <th>Título da Série</th>
+                        <th>Visualizar</th>
                         <th>Editar</th>
                         <th>Excluir</th>
                     </tr>
@@ -62,14 +56,19 @@ const SerieList = () => {
                 <tbody>
                     {series.map((serie) => (
                         <tr key={serie.id}>
-                            {/* Coluna 1: Título como âncora para o SerieForm */}
+                            <td className="serie-titulo-texto">{serie.titulo}</td>
+                            
+                            {/* Coluna Visualizar */}
                             <td>
-                                <Link to={`/form?view=${serie.id}`} className="serie-link">
-                                    {serie.titulo}
-                                </Link>
+                                <button 
+                                    className="btn-view" 
+                                    onClick={() => handleVisualizar(serie.id)}
+                                >
+                                    Ver Detalhes
+                                </button>
                             </td>
                             
-                            {/* Coluna 2: Botão de Edição */}
+                            {/* Coluna Editar */}
                             <td>
                                 <button 
                                     className="btn-edit" 
@@ -79,7 +78,7 @@ const SerieList = () => {
                                 </button>
                             </td>
                             
-                            {/* Coluna 3: Botão de Deleção (Abre Modal) */}
+                            {/* Coluna Excluir */}
                             <td>
                                 <button 
                                     className="btn-delete" 
@@ -91,18 +90,16 @@ const SerieList = () => {
                         </tr>
                     ))}
 
-                    {/* Última linha: Adicionar Série */}
                     <tr className="row-add">
-                        <td colSpan="3">
+                        <td colSpan="4">
                             <Link to="/form" className="btn-add-table">
-                                + Adicionar Série à SerieList
+                                + Adicionar Série à Lista
                             </Link>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            {/* Modal de Confirmação */}
             {modalAberto && (
                 <div className="modal-overlay">
                     <div className="modal-content">
